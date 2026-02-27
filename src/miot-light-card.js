@@ -26,7 +26,7 @@ class MiotLightCard extends LitElement {
     }
 
     getCardSize() {
-        return 3;
+        return 2;
     }
 
     setConfig(config) {
@@ -390,10 +390,22 @@ class MiotLightCard extends LitElement {
 customElements.define('miot-light-card', MiotLightCard);
 
 window.customCards = window.customCards || [];
-window.customCards.push({
-    type: 'miot-light-card',
-    name: 'miot light card',
-    description: 'Light card for hass-xiaomi-miot entities with mode and delay controls.',
-    preview: true,
-});
+
+// Normalize legacy card metadata in case old resources are still cached in HA.
+for (const card of window.customCards) {
+    if (card.type === 'yeelink-light-card' || card.type === 'miot-light-card') {
+        card.name = 'miot light card';
+        card.description = 'Light card for hass-xiaomi-miot entities with mode and delay controls.';
+        card.preview = true;
+    }
+}
+
+if (!window.customCards.some((card) => card.type === 'miot-light-card')) {
+    window.customCards.push({
+        type: 'miot-light-card',
+        name: 'miot light card',
+        description: 'Light card for hass-xiaomi-miot entities with mode and delay controls.',
+        preview: true,
+    });
+}
 
