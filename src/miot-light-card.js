@@ -66,15 +66,33 @@ class MiotLightCard extends LitElement {
         clearTimeout(this._holdTimer);
     }
 
-    toggleLightPower(ev) {
+    async refreshEntities(entityIds = []) {
+        if (!this.hass) return;
+        const uniqueIds = [...new Set(entityIds.filter(Boolean))];
+        if (uniqueIds.length === 0) return;
+        await Promise.allSettled(uniqueIds.map((entityId) => this.hass.callService('homeassistant', 'update_entity', {
+            entity_id: entityId,
+        })));
+    }
+
+    getDelayInfo(delayState) {
+        const rawValue = parseInt(delayState?.state, 10) || 0;
+        const rawUnit = String(delayState?.attributes?.unit_of_measurement || '').toLowerCase();
+        const isSecondUnit = ['s', 'sec', 'secs', 'second', 'seconds', '秒'].includes(rawUnit);
+        const minuteValue = isSecondUnit ? Math.round(rawValue / 60) : rawValue;
+        return { rawValue, minuteValue, isSecondUnit };
+    }
+
+    async toggleLightPower(ev) {
         ev.stopPropagation();
         if (!this.hass || !this.config.entity) return;
         const lightState = this.hass.states[this.config.entity];
         if (!lightState) return;
         const service = lightState.state === 'on' ? 'turn_off' : 'turn_on';
-        this.hass.callService('light', service, {
+        await this.hass.callService('light', service, {
             entity_id: this.config.entity,
         });
+        await this.refreshEntities([this.config.entity, this.config.delay_entity]);
     }
 
     hexToRgba(hex, alpha) {
@@ -128,24 +146,34 @@ class MiotLightCard extends LitElement {
         }
     }
 
-    toggleDelay() {
+    async toggleDelay() {
         if (!this.hass || !this.config.delay_entity) return;
         const delayState = this.hass.states[this.config.delay_entity];
         if (!delayState) return;
 
-        const currentDelay = parseInt(delayState.state, 10) || 0;
-        this.hass.callService('number', 'set_value', {
+        const { rawValue, isSecondUnit } = this.getDelayInfo(delayState);
+        const defaultDelayValue = isSecondUnit ? 30 * 60 : 30;
+        await this.hass.callService('number', 'set_value', {
             entity_id: this.config.delay_entity,
-            value: currentDelay > 0 ? 0 : 30,
+            value: rawValue > 0 ? 0 : defaultDelayValue,
         });
+        await this.refreshEntities([this.config.delay_entity, this.config.entity]);
     }
 
-    changeDelay(ev) {
+    async changeDelay(ev) {
         if (!this.hass || !this.config.delay_entity) return;
-        this.hass.callService('number', 'set_value', {
+        const delayState = this.hass.states[this.config.delay_entity];
+        if (!delayState) return;
+        const { isSecondUnit } = this.getDelayInfo(delayState);
+        const minuteValue = parseInt(ev.target.value, 10);
+        if (Number.isNaN(minuteValue)) return;
+        const targetValue = isSecondUnit ? minuteValue * 60 : minuteValue;
+
+        await this.hass.callService('number', 'set_value', {
             entity_id: this.config.delay_entity,
-            value: ev.target.value,
+            value: targetValue,
         });
+        await this.refreshEntities([this.config.delay_entity, this.config.entity]);
     }
 
     static get styles() {
@@ -303,7 +331,7 @@ class MiotLightCard extends LitElement {
         const stateText = isOn ? `${percentage}%` : '關閉';
 
         const mode = lightState.attributes['light.mode'] || 1;
-        const delay = parseInt(delayState.state, 10) || 0;
+        const { rawValue: delayRaw, minuteValue: delayMinutes } = this.getDelayInfo(delayState);
 
         const sunColor = this.config.sun_color || '#fb8c00';
         const moonColor = this.config.moon_color || '#2196f3';
@@ -319,8 +347,8 @@ class MiotLightCard extends LitElement {
         const iconDisplayColor = isOn ? activeColor : offIconColor;
         const iconDisplayBg = isOn ? activeBg : offBgColor;
 
-        const containerStyle = delay > 0 ? `background: ${activeBg};` : '';
-        const delayText = delay > 0 ? `${delay}s` : '延遲';
+        const containerStyle = delayRaw > 0 ? `background: ${activeBg};` : '';
+        const delayText = delayRaw > 0 ? `${delayMinutes}m` : '延遲';
 
         return html`
       <ha-card
@@ -365,24 +393,24 @@ class MiotLightCard extends LitElement {
             ${isMoon ? '月光' : '日光'}
           </button>
 
-          <div class="delay-container ${delay > 0 ? 'active' : 'inactive'}" style="${containerStyle}">
+          <div class="delay-container ${delayRaw > 0 ? 'active' : 'inactive'}" style="${containerStyle}">
             <button
               class="delay-btn"
-              style="color: ${delay > 0 ? activeColor : 'var(--primary-text-color)'}"
+              style="color: ${delayRaw > 0 ? activeColor : 'var(--primary-text-color)'}"
               @click=${this.toggleDelay}
             >
               <ha-icon icon="mdi:timer-outline" style="width: 18px;"></ha-icon>
               ${delayText}
             </button>
 
-            ${delay > 0
+            ${delayRaw > 0
         ? html`
                   <div class="slider-container">
                     <ha-slider
                       min="0"
                       max="60"
                       step="5"
-                      .value=${delay}
+                      .value=${delayMinutes}
                       @change=${this.changeDelay}
                       style="--md-sys-color-primary: ${activeColor};"
                     ></ha-slider>
