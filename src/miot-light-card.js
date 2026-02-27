@@ -315,7 +315,9 @@ class MiotLightCard extends LitElement {
         const activeBg = this.hexToRgba(activeColor, 0.15);
         const activeIcon = isMoon ? moonIcon : sunIcon;
         const offIconColor = 'var(--state-icon-color, var(--disabled-text-color, var(--secondary-text-color)))';
+        const offBgColor = 'rgba(var(--rgb-disabled-color, 120, 120, 120), 0.15)';
         const iconDisplayColor = isOn ? activeColor : offIconColor;
+        const iconDisplayBg = isOn ? activeBg : offBgColor;
 
         const containerStyle = delay > 0 ? `background: ${activeBg};` : '';
         const delayText = delay > 0 ? `${delay}s` : '延遲';
@@ -332,7 +334,7 @@ class MiotLightCard extends LitElement {
         <div class="header">
           <div
             class="icon-circle clickable"
-            style="background: ${activeBg}; color: ${iconDisplayColor}"
+            style="background: ${iconDisplayBg}; color: ${iconDisplayColor}"
             @click=${this.toggleLightPower}
           >
             <ha-icon icon="${activeIcon}"></ha-icon>
@@ -356,7 +358,7 @@ class MiotLightCard extends LitElement {
         <div class="controls">
           <button
             class="pill-btn"
-            style="background: ${activeBg}; color: ${iconDisplayColor}"
+            style="background: ${iconDisplayBg}; color: ${iconDisplayColor}"
             @click=${this.toggleMode}
           >
             <ha-icon icon="${activeIcon}" style="width: 18px;"></ha-icon>
