@@ -157,7 +157,7 @@ class MiotLightCard extends LitElement {
             entity_id: this.config.delay_entity,
             value: rawValue > 0 ? 0 : defaultDelayValue,
         });
-        await this.refreshEntities([this.config.delay_entity, this.config.entity]);
+        await this.refreshEntities([this.config.delay_entity]);
     }
 
     async changeDelay(ev) {
@@ -173,7 +173,7 @@ class MiotLightCard extends LitElement {
             entity_id: this.config.delay_entity,
             value: targetValue,
         });
-        await this.refreshEntities([this.config.delay_entity, this.config.entity]);
+        await this.refreshEntities([this.config.delay_entity]);
     }
 
     static get styles() {

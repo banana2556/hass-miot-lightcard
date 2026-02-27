@@ -722,7 +722,7 @@ class jt extends x {
     await this.hass.callService("number", "set_value", {
       entity_id: this.config.delay_entity,
       value: e > 0 ? 0 : s
-    }), await this.refreshEntities([this.config.delay_entity, this.config.entity]);
+    }), await this.refreshEntities([this.config.delay_entity]);
   }
   async changeDelay(t) {
     if (!this.hass || !this.config.delay_entity) return;
@@ -734,7 +734,7 @@ class jt extends x {
     await this.hass.callService("number", "set_value", {
       entity_id: this.config.delay_entity,
       value: o
-    }), await this.refreshEntities([this.config.delay_entity, this.config.entity]);
+    }), await this.refreshEntities([this.config.delay_entity]);
   }
   static get styles() {
     return _t`
