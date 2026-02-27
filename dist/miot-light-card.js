@@ -194,8 +194,8 @@ let A = class extends HTMLElement {
     if (s !== void 0 && this._$Em !== s) {
       const c = i.getPropertyOptions(s), a = typeof c.converter == "function" ? { fromAttribute: c.converter } : ((o = c.converter) == null ? void 0 : o.fromAttribute) !== void 0 ? c.converter : B;
       this._$Em = s;
-      const l = a.fromAttribute(e, c.type);
-      this[s] = l ?? ((r = this._$Ej) == null ? void 0 : r.get(s)) ?? l, this._$Em = null;
+      const h = a.fromAttribute(e, c.type);
+      this[s] = h ?? ((r = this._$Ej) == null ? void 0 : r.get(s)) ?? h, this._$Em = null;
     }
   }
   requestUpdate(t, e, i, s = !1, o) {
@@ -284,9 +284,9 @@ A.elementStyles = [], A.shadowRootOptions = { mode: "open" }, A[P("elementProper
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const T = globalThis, X = (n) => n, R = T.trustedTypes, Y = R ? R.createPolicy("lit-html", { createHTML: (n) => n }) : void 0, ct = "$lit$", $ = `lit$${Math.random().toFixed(9).slice(2)}$`, ht = "?" + $, wt = `<${ht}>`, b = document, k = () => b.createComment(""), U = (n) => n === null || typeof n != "object" && typeof n != "function", q = Array.isArray, Et = (n) => q(n) || typeof (n == null ? void 0 : n[Symbol.iterator]) == "function", D = `[ 	
+const T = globalThis, X = (n) => n, R = T.trustedTypes, Y = R ? R.createPolicy("lit-html", { createHTML: (n) => n }) : void 0, ct = "$lit$", $ = `lit$${Math.random().toFixed(9).slice(2)}$`, lt = "?" + $, wt = `<${lt}>`, b = document, k = () => b.createComment(""), U = (n) => n === null || typeof n != "object" && typeof n != "function", q = Array.isArray, Et = (n) => q(n) || typeof (n == null ? void 0 : n[Symbol.iterator]) == "function", D = `[ 	
 \f\r]`, S = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, tt = /-->/g, et = />/g, y = RegExp(`>|${D}(?:([^\\s"'>=/]+)(${D}*=${D}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), it = /'/g, st = /"/g, lt = /^(?:script|style|textarea|title)$/i, Ct = (n) => (t, ...e) => ({ _$litType$: n, strings: t, values: e }), x = Ct(1), E = Symbol.for("lit-noChange"), u = Symbol.for("lit-nothing"), nt = /* @__PURE__ */ new WeakMap(), _ = b.createTreeWalker(b, 129);
+\f\r"'\`<>=]|("|')|))|$)`, "g"), it = /'/g, st = /"/g, ht = /^(?:script|style|textarea|title)$/i, Ct = (n) => (t, ...e) => ({ _$litType$: n, strings: t, values: e }), x = Ct(1), E = Symbol.for("lit-noChange"), u = Symbol.for("lit-nothing"), nt = /* @__PURE__ */ new WeakMap(), _ = b.createTreeWalker(b, 129);
 function dt(n, t) {
   if (!q(n) || !n.hasOwnProperty("raw")) throw Error("invalid template strings array");
   return Y !== void 0 ? Y.createHTML(t) : t;
@@ -296,10 +296,10 @@ const St = (n, t) => {
   let s, o = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", r = S;
   for (let c = 0; c < e; c++) {
     const a = n[c];
-    let l, d, h = -1, g = 0;
-    for (; g < a.length && (r.lastIndex = g, d = r.exec(a), d !== null); ) g = r.lastIndex, r === S ? d[1] === "!--" ? r = tt : d[1] !== void 0 ? r = et : d[2] !== void 0 ? (lt.test(d[2]) && (s = RegExp("</" + d[2], "g")), r = y) : d[3] !== void 0 && (r = y) : r === y ? d[0] === ">" ? (r = s ?? S, h = -1) : d[1] === void 0 ? h = -2 : (h = r.lastIndex - d[2].length, l = d[1], r = d[3] === void 0 ? y : d[3] === '"' ? st : it) : r === st || r === it ? r = y : r === tt || r === et ? r = S : (r = y, s = void 0);
+    let h, d, l = -1, g = 0;
+    for (; g < a.length && (r.lastIndex = g, d = r.exec(a), d !== null); ) g = r.lastIndex, r === S ? d[1] === "!--" ? r = tt : d[1] !== void 0 ? r = et : d[2] !== void 0 ? (ht.test(d[2]) && (s = RegExp("</" + d[2], "g")), r = y) : d[3] !== void 0 && (r = y) : r === y ? d[0] === ">" ? (r = s ?? S, l = -1) : d[1] === void 0 ? l = -2 : (l = r.lastIndex - d[2].length, h = d[1], r = d[3] === void 0 ? y : d[3] === '"' ? st : it) : r === st || r === it ? r = y : r === tt || r === et ? r = S : (r = y, s = void 0);
     const p = r === y && n[c + 1].startsWith("/>") ? " " : "";
-    o += r === S ? a + wt : h >= 0 ? (i.push(l), a.slice(0, h) + ct + a.slice(h) + $ + p) : a + $ + (h === -2 ? c : p);
+    o += r === S ? a + wt : l >= 0 ? (i.push(h), a.slice(0, l) + ct + a.slice(l) + $ + p) : a + $ + (l === -2 ? c : p);
   }
   return [dt(n, o + (n[e] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), i];
 };
@@ -308,29 +308,29 @@ class M {
     let s;
     this.parts = [];
     let o = 0, r = 0;
-    const c = t.length - 1, a = this.parts, [l, d] = St(t, e);
-    if (this.el = M.createElement(l, i), _.currentNode = this.el.content, e === 2 || e === 3) {
-      const h = this.el.content.firstChild;
-      h.replaceWith(...h.childNodes);
+    const c = t.length - 1, a = this.parts, [h, d] = St(t, e);
+    if (this.el = M.createElement(h, i), _.currentNode = this.el.content, e === 2 || e === 3) {
+      const l = this.el.content.firstChild;
+      l.replaceWith(...l.childNodes);
     }
     for (; (s = _.nextNode()) !== null && a.length < c; ) {
       if (s.nodeType === 1) {
-        if (s.hasAttributes()) for (const h of s.getAttributeNames()) if (h.endsWith(ct)) {
-          const g = d[r++], p = s.getAttribute(h).split($), f = /([.?@])?(.*)/.exec(g);
-          a.push({ type: 1, index: o, name: f[2], strings: p, ctor: f[1] === "." ? Tt : f[1] === "?" ? kt : f[1] === "@" ? Ut : I }), s.removeAttribute(h);
-        } else h.startsWith($) && (a.push({ type: 6, index: o }), s.removeAttribute(h));
-        if (lt.test(s.tagName)) {
-          const h = s.textContent.split($), g = h.length - 1;
+        if (s.hasAttributes()) for (const l of s.getAttributeNames()) if (l.endsWith(ct)) {
+          const g = d[r++], p = s.getAttribute(l).split($), f = /([.?@])?(.*)/.exec(g);
+          a.push({ type: 1, index: o, name: f[2], strings: p, ctor: f[1] === "." ? Tt : f[1] === "?" ? kt : f[1] === "@" ? Ut : I }), s.removeAttribute(l);
+        } else l.startsWith($) && (a.push({ type: 6, index: o }), s.removeAttribute(l));
+        if (ht.test(s.tagName)) {
+          const l = s.textContent.split($), g = l.length - 1;
           if (g > 0) {
             s.textContent = R ? R.emptyScript : "";
-            for (let p = 0; p < g; p++) s.append(h[p], k()), _.nextNode(), a.push({ type: 2, index: ++o });
-            s.append(h[g], k());
+            for (let p = 0; p < g; p++) s.append(l[p], k()), _.nextNode(), a.push({ type: 2, index: ++o });
+            s.append(l[g], k());
           }
         }
-      } else if (s.nodeType === 8) if (s.data === ht) a.push({ type: 2, index: o });
+      } else if (s.nodeType === 8) if (s.data === lt) a.push({ type: 2, index: o });
       else {
-        let h = -1;
-        for (; (h = s.data.indexOf($, h + 1)) !== -1; ) a.push({ type: 7, index: o }), h += $.length - 1;
+        let l = -1;
+        for (; (l = s.data.indexOf($, l + 1)) !== -1; ) a.push({ type: 7, index: o }), l += $.length - 1;
       }
       o++;
     }
@@ -363,8 +363,8 @@ class Pt {
     let o = _.nextNode(), r = 0, c = 0, a = i[0];
     for (; a !== void 0; ) {
       if (r === a.index) {
-        let l;
-        a.type === 2 ? l = new O(o, o.nextSibling, this, t) : a.type === 1 ? l = new a.ctor(o, a.name, a.strings, this, t) : a.type === 6 && (l = new Mt(o, this, t)), this._$AV.push(l), a = i[++c];
+        let h;
+        a.type === 2 ? h = new O(o, o.nextSibling, this, t) : a.type === 1 ? h = new a.ctor(o, a.name, a.strings, this, t) : a.type === 6 && (h = new Mt(o, this, t)), this._$AV.push(h), a = i[++c];
       }
       r !== (a == null ? void 0 : a.index) && (o = _.nextNode(), r++);
     }
@@ -454,8 +454,8 @@ class I {
     if (o === void 0) t = C(this, t, e, 0), r = !U(t) || t !== this._$AH && t !== E, r && (this._$AH = t);
     else {
       const c = t;
-      let a, l;
-      for (t = o[0], a = 0; a < o.length - 1; a++) l = C(this, c[i + a], e, a), l === E && (l = this._$AH[a]), r || (r = !U(l) || l !== this._$AH[a]), l === u ? t = u : t !== u && (t += (l ?? "") + o[a + 1]), this._$AH[a] = l;
+      let a, h;
+      for (t = o[0], a = 0; a < o.length - 1; a++) h = C(this, c[i + a], e, a), h === E && (h = this._$AH[a]), r || (r = !U(h) || h !== this._$AH[a]), h === u ? t = u : t !== u && (t += (h ?? "") + o[a + 1]), this._$AH[a] = h;
     }
     r && !s && this.j(t);
   }
@@ -777,13 +777,18 @@ class Rt extends w {
 
       .slider-container {
         flex: 1; padding-right: 16px; display: flex; align-items: center;
+        min-width: 120px;
       }
       ha-slider { width: 100%; }
+      .preview-delay-slider {
+        width: 100%;
+        margin: 0;
+      }
     `;
   }
   renderPreviewCard() {
     var o, r, c;
-    const t = ((o = this.config) == null ? void 0 : o.sun_color) || "#fb8c00", e = ((r = this.config) == null ? void 0 : r.sun_icon) || "mdi:weather-sunny", i = ((c = this.config) == null ? void 0 : c.name) || "miot light card", s = this.hexToRgba(t, 0.15);
+    const t = ((o = this.config) == null ? void 0 : o.sun_color) || "#fb8c00", e = ((r = this.config) == null ? void 0 : r.sun_icon) || "mdi:weather-sunny", i = ((c = this.config) == null ? void 0 : c.name) || "客廳範例燈", s = this.hexToRgba(t, 0.15);
     return x`
       <ha-card class="preview">
         <div class="header">
@@ -818,14 +823,16 @@ class Rt extends w {
               30m
             </button>
             <div class="slider-container">
-              <ha-slider
+              <input
+                class="preview-delay-slider"
+                type="range"
                 min="0"
                 max="60"
                 step="5"
-                .value=${30}
+                value="30"
                 disabled
-                style="--md-sys-color-primary: ${t};"
-              ></ha-slider>
+                style="accent-color: ${t};"
+              />
             </div>
           </div>
         </div>
@@ -844,7 +851,7 @@ class Rt extends w {
            找不到實體，請確認 entity_id 設定是否正確。
          </ha-card>
        `;
-    const i = t.state === "on", s = t.attributes.brightness || 0, o = i ? Math.round(s / 255 * 100) : 0, r = i ? `${o}%` : "關閉", c = t.attributes["light.mode"] || 1, a = parseInt(e.state, 10) || 0, l = this.config.sun_color || "#fb8c00", d = this.config.moon_color || "#2196f3", h = this.config.sun_icon || "mdi:weather-sunny", g = this.config.moon_icon || "mdi:weather-night", p = c === 2, f = p ? d : l, H = this.hexToRgba(f, 0.15), Z = p ? g : h, J = i ? f : "var(--state-icon-color, var(--disabled-text-color, var(--secondary-text-color)))", ut = a > 0 ? `background: ${H};` : "", pt = a > 0 ? `${a}s` : "延遲";
+    const i = t.state === "on", s = t.attributes.brightness || 0, o = i ? Math.round(s / 255 * 100) : 0, r = i ? `${o}%` : "關閉", c = t.attributes["light.mode"] || 1, a = parseInt(e.state, 10) || 0, h = this.config.sun_color || "#fb8c00", d = this.config.moon_color || "#2196f3", l = this.config.sun_icon || "mdi:weather-sunny", g = this.config.moon_icon || "mdi:weather-night", p = c === 2, f = p ? d : h, H = this.hexToRgba(f, 0.15), Z = p ? g : l, J = i ? f : "var(--state-icon-color, var(--disabled-text-color, var(--secondary-text-color)))", ut = a > 0 ? `background: ${H};` : "", pt = a > 0 ? `${a}s` : "延遲";
     return x`
       <ha-card
         class=${this.config.entity ? "clickable" : ""}

@@ -207,15 +207,20 @@ class MiotLightCard extends LitElement {
 
       .slider-container {
         flex: 1; padding-right: 16px; display: flex; align-items: center;
+        min-width: 120px;
       }
       ha-slider { width: 100%; }
+      .preview-delay-slider {
+        width: 100%;
+        margin: 0;
+      }
     `;
     }
 
     renderPreviewCard() {
         const sunColor = this.config?.sun_color || '#fb8c00';
         const sunIcon = this.config?.sun_icon || 'mdi:weather-sunny';
-        const previewName = this.config?.name || 'miot light card';
+        const previewName = this.config?.name || '客廳範例燈';
         const activeBg = this.hexToRgba(sunColor, 0.15);
 
         return html`
@@ -252,14 +257,16 @@ class MiotLightCard extends LitElement {
               30m
             </button>
             <div class="slider-container">
-              <ha-slider
+              <input
+                class="preview-delay-slider"
+                type="range"
                 min="0"
                 max="60"
                 step="5"
-                .value=${30}
+                value="30"
                 disabled
-                style="--md-sys-color-primary: ${sunColor};"
-              ></ha-slider>
+                style="accent-color: ${sunColor};"
+              />
             </div>
           </div>
         </div>
